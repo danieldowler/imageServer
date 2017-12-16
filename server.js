@@ -2,6 +2,7 @@
 const express= require('express');
 const app= express();
 const mongoose= require('mongoose');
+const cors= require('cors');
 
 mongoose.Promises= global.Promises;
 
@@ -10,6 +11,9 @@ const {PORT, DATABASE_URL}= require('./config.js');
 
 const tagrouter= require('./tagrouter.js');
 const imagerouter= require ('./imagerouter.js');
+app.use(cors({
+    origin: ['http://localhost:8000']
+}));
 
 app.use(express.static('public'));
 
