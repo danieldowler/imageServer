@@ -2,14 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Image = require('./models/image');
 const fileUpload = require('express-fileupload');
-const admin = require("firebase-admin");
-const Storage = require('@google-cloud/storage');
-const images= require ('./images.js');
+const path = require('path');
 
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 router.use(jsonParser);
-/*router.use(fileUpload());*/
+router.use(fileUpload());
 
 router.get('/', (req, res) => {
     Image.find().then(images => {
@@ -18,26 +16,21 @@ router.get('/', (req, res) => {
 });
 
 
-router.post('/', images.multer.single('file'),
-images.sendUploadToGCS, (req, res) => {
+router.post('/', (req, res) => {
     let data = req.body;
     console.log(data);
-    
-        // Was an image uploaded? If so, we'll use its public URL
-        // in cloud storage.
-        if (req.file && req.file.cloudStoragePublicUrl) {
-          data.url = req.file.cloudStoragePublicUrl;
-        };
-    /*console.log(req.files);
-    var serviceAccount = require("./image-capstone-firebase.json");
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        storageBucket: "imageBucket.appspot.com"
-    });
-    const base64data = new Buffer(req.files.file.data, 'binary');
-    storage.bucket('imageBucket').upload(base64data).then(()=>{console.log('file uploaded')});*/
-    Image.create(data).then(image => res.json(image));
-    
+    if(req.files){
+        let file = req.files.file;
+        file.mv(path.join( __dirname, 'public/images/' + file.name), err => {
+            if(err) {
+                return res.status(500).send(err);
+            }
+            Image.create({
+                title:file.name,
+                URL:'images/' + file.name
+            }).then(image => res.json(image)).catch(err => console.log(err));
+        });
+    };
 });
 
 router.put('/', (req, res) => {
