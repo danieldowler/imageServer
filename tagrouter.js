@@ -15,7 +15,7 @@ Tag.find().then(tags => {
 
 router.post('/', (req,res) =>{
     let new_tag = {
-        name: req.body.name,
+        name: req.body.tag,
         date: Date.now()
     };
     Tag
@@ -23,6 +23,10 @@ router.post('/', (req,res) =>{
         .then(tag => {
             console.log('This tag was saved', tag);
             Image.findById(req.body.image_id, (err, image) => {
+                if (err){
+                    console.log(err);
+                    return res.json(err);
+                }
               console.log('This image was loaded', image);
               image.tags ? image.tags.push(tag) : image.tags = [tag];
               image

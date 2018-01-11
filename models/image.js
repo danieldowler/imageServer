@@ -11,7 +11,7 @@ const imageSchema= mongoose.Schema({
         type: String, require: true
     },
     tags:[{
-        type: mongoose.Schema.Types.ObjectId, ref:Tag
+        type: mongoose.Schema.Types.ObjectId, ref:'Tag'
     }]
 });
 

@@ -15,6 +15,11 @@ router.get('/', (req, res) => {
     })
 });
 
+router.get("/:id", (req, res) =>{
+    Image.findOne({_id: req.params.id})
+    .populate({path:"tags"}).exec((err, image)=>{res.json(image);
+    })
+})
 
 router.post('/', (req, res) => {
     let data = req.body;
@@ -35,6 +40,9 @@ router.post('/', (req, res) => {
 
 router.put('/', (req, res) => {
     Image.findByIdAndUpdate(req.body._id, req.body).then(image => res.json(image))
+    Image.populate(image, opts,(err,image)
+
+)
 });
 
 router.delete('/:id', (req, res) => {
