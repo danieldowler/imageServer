@@ -1,7 +1,7 @@
 const express= require('express');
 const router= express.Router();
 const Tag= require('./models/tag');
-const image = require('./models/image')
+const Image = require('./models/image')
 
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
@@ -14,6 +14,7 @@ Tag.find().then(tags => {
 });
 
 router.post('/', (req,res) =>{
+    console.log(req.body);
     let new_tag = {
         name: req.body.tag,
         date: Date.now()
@@ -28,9 +29,9 @@ router.post('/', (req,res) =>{
                     return res.json(err);
                 }
               console.log('This image was loaded', image);
-              image.tags ? image.tags.push(tag) : image.tags = [tag];
-              image
-                  .save(() => res.json(tag));
+              if(image.tags){ image.tags.push(tag)} 
+              else {image.tags = [tag]};
+              image.save(() => res.json(tag));
             });
 
         });
@@ -43,7 +44,4 @@ Tag.findByIdAndUpdate(req.body._id, req.body).then(tag => res.json(tag))
 router.delete('/:id', (req,res) =>{
 Tag.findByIdAndRemove(req.params.id).then(() => res.status(204).end());
 });
-
-
-
 module.exports= router;
