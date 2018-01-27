@@ -21,6 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/tag', tagrouter);
 app.use('/image', imagerouter)
+app.use('/images', imagerouter)
 
 app.use('/', function (req, res) {
     res.status(404).json({ message: 'Not Found' });

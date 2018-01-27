@@ -17,7 +17,7 @@ router.post('/', (req,res) =>{
     console.log(req.body);
     let new_tag = {
         name: req.body.tag,
-        date: Date.now()
+        date: Date.now()" "zx
     };
     Tag
         .create(new_tag)
