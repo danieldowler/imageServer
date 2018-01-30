@@ -45,10 +45,12 @@ router.put('/', (req, res) => {
 )
 });
 
+router.delete('/all', (req,res) =>{
+    console.log('delete all images');
+Image.remove({}, function(){res.status(204).end();});
+});
+
 router.delete('/:id', (req, res) => {
     Image.findByIdAndRemove(req.params.id).then(() => res.status(204).end());
 });
-
-
-
 module.exports = router;

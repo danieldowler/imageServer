@@ -17,7 +17,7 @@ router.post('/', (req,res) =>{
     console.log(req.body);
     let new_tag = {
         name: req.body.tag,
-        date: Date.now()" "zx
+        date: Date.now()
     };
     Tag
         .create(new_tag)
@@ -39,6 +39,11 @@ router.post('/', (req,res) =>{
 
 router.put('/', (req,res) =>{
 Tag.findByIdAndUpdate(req.body._id, req.body).then(tag => res.json(tag))
+});
+
+router.delete('/all', (req,res) =>{
+    console.log('delete all tags');
+Tag.remove({}, function(){res.status(204).end();});
 });
 
 router.delete('/:id', (req,res) =>{

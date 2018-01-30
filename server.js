@@ -4,6 +4,7 @@ const app= express();
 const mongoose= require('mongoose');
 const cors= require('cors');
 const path= require('path');
+const passport= require('passport');
 
 mongoose.Promises= global.Promises;
 
@@ -12,6 +13,7 @@ const {PORT, DATABASE_URL}= require('./config.js');
 
 const tagrouter= require('./tagrouter.js');
 const imagerouter= require ('./imagerouter.js');
+/*const userrouter= require('./userrouter.js');*/
 app.use(cors({
     origin: ['http://localhost:8000']
 }));
@@ -20,8 +22,9 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/tag', tagrouter);
-app.use('/image', imagerouter)
-app.use('/images', imagerouter)
+app.use('/image', imagerouter);
+app.use('/images', imagerouter);
+//app.use('/user', userrouter);
 
 app.use('/', function (req, res) {
     res.status(404).json({ message: 'Not Found' });
