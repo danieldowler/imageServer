@@ -49,4 +49,42 @@ describe('../images', function () {
                 expect(res.body.URL).to.equal(newImage.URL);
             });
     });
+    
+    it('should update items on PUT', function() {
+    const updateData = {
+        title: 'collage.jpeg'
+    };
+    return chai.request(app)
+      
+      .get('/images')
+      .then(function(res) {
+        updateData._id = res.body[0]._id;
+        return chai.request(app)
+          .put(`/images`)
+          .send(updateData)
+      })
+      .then(function(res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+        expect(res.body.title).to.equal(updateData.title);
+        expect(res.body).to.include.keys({
+            title:'', 
+            _id:''
+        });
+      });
+  });
+
+  it('should delete items on DELETE', function() {
+    return chai.request(app)
+      .get('/images')
+      .then(function(res) {
+        return chai.request(app)
+          .delete(`/images/${res.body[0]._id}`);
+      })
+      .then(function(res) {
+        expect(res).to.have.status(204);
+      });
+  });
+
 });

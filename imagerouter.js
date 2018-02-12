@@ -40,9 +40,7 @@ router.post('/', (req, res) => {
 
 router.put('/', (req, res) => {
     Image.findByIdAndUpdate(req.body._id, req.body).then(image => res.json(image))
-    Image.populate(image, opts,(err,image)
-
-)
+    //Image.populate(image, opts,(err,image))
 });
 
 router.delete('/all', (req,res) =>{
