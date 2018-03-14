@@ -21,6 +21,18 @@ router.get("/:id", (req, res) =>{
     })
 })
 
+router.get("/search/:tag", (req,res) =>{
+    Image
+    .find({
+        "tags.name":req.params.tag
+    })
+    .populate({path: "tags"})
+    .exec()
+    .then(images =>{
+        res.json(images)
+    })
+})
+
 router.post('/', (req, res) => {
     let data = req.body;
     console.log(data);
@@ -51,4 +63,5 @@ Image.remove({}, function(){res.status(204).end();});
 router.delete('/:id', (req, res) => {
     Image.findByIdAndRemove(req.params.id).then(() => res.status(204).end());
 });
+
 module.exports = router;

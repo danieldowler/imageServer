@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv').config();
 const express= require('express');
 const app= express();
 const mongoose= require('mongoose');
@@ -10,10 +11,16 @@ mongoose.Promises= global.Promises;
 
 const {PORT, DATABASE_URL}= require('./config.js');
 /*const {TAGS}=require('./tagmodel');*/
+const {localStrategy, jwtStrategy } = require('./authStrategies');
+const {router: authRouter} =require('./authrouter')
 
 const tagrouter= require('./tagrouter.js');
 const imagerouter= require ('./imagerouter.js');
-const userrouter= require('./userrouter.js')
+const userrouter= require('./userrouter.js');
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
 app.use(cors({
     origin: ['http://localhost:8000']
 }));
@@ -21,6 +28,7 @@ app.use(cors({
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use("/auth", authRouter);
 app.use('/tag', tagrouter);
 app.use('/image', imagerouter);
 app.use('/images', imagerouter);

@@ -20,7 +20,15 @@ router.post('/', (req,res) =>{
         date: Date.now()
     };
     Tag
-        .create(new_tag)
+    .findOne({name: req.body.tag})
+    .then( tag=>{
+        if(tag){
+            return tag;
+        }else{
+            return Tag
+            .create(new_tag)
+        }
+    })
         .then(tag => {
             console.log('This tag was saved', tag);
             Image.findById(req.body.image_id, (err, image) => {
