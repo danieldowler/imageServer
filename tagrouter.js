@@ -15,6 +15,12 @@ Tag.find().then(tags => {
 
 router.post('/', (req,res) =>{
     console.log(req.body);
+    const tag_names = req.body.tag.split(",").map(s =>{
+        return {
+            name: s,
+            date: Date.now()
+        }
+    });
     let new_tag = {
         name: req.body.tag,
         date: Date.now()
